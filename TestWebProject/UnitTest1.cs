@@ -59,5 +59,14 @@ namespace Tests
             registryPage.Navigate().SignIn().FillUser(user).Submit();
         }
         
+        [Test]
+        public void FailTestSignIn()
+        {
+            Registry registryPage = new Registry(_chromeDriver);
+            User  user = User.GetRandomUserForRegistration();
+
+            registryPage.Navigate().SignIn().FillUser(user).Submit();
+        }
+        
     }
 }
