@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using Tests.Helpers;
 
 
 namespace Tests.Models
@@ -10,17 +11,17 @@ namespace Tests.Models
         public string Email { get; set; }
         public string Password { get; set; }
         
-        public static User TestUser()
+        public static User GetRandomUserForRegistration()
         {
             return new User()
             {
-                Login = "test000000000000000000",
-                Email = "test88989898@gmail.com",
-                Password = "tes7876%%67ting",
+                Login = WordCreator.GetRandomWord(10),
+                Email = WordCreator.GetRandomEmail(10) ,
+                Password = WordCreator.GetRandomWord(15),
             };
         }
         
-        public static User MyAkk()
+        public static User ValidUser()
         {
             return new User()
             {

@@ -26,6 +26,9 @@ namespace Tests.Pages
         [FindsBy(How = How.XPath, Using = "/html/body/div[1]/header/div/div[2]/div[2]/a[1]")] 
         private IWebElement _signInButton;
         
+        private static readonly string PROBLEMS = "Problems with creating account";
+        private static readonly string ERROR = "flash-error";
+        
         public Registry(IWebDriver driver)
         {
             _driver = driver;
@@ -50,6 +53,18 @@ namespace Tests.Pages
         public void Submit()
         {
             _submitButton.Click();
+            try
+            {
+                if (_driver.FindElement(By.ClassName(ERROR)) != null)
+                {
+                    throw new Exception("has error");
+                }
+            }
+            catch (Exception e)
+            {
+                
+            }
+
         }
 
         public Login SignIn()

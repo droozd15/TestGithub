@@ -1,3 +1,4 @@
+using System;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
@@ -16,25 +17,47 @@ namespace Tests
             _chromeDriver = new ChromeDriver("C:/Users/Anna Zanovskaya/RiderProjects/TestWebProject/TestWebProject/bin/Debug/netcoreapp2.1");
         }
 
-        [Test]
-        public void Test1()
+        [OneTimeTearDown]
+        public void OneTimeTearDown()
         {
-           Registry registryPage = new Registry(_chromeDriver);
-           User user = User.TestUser();
+            _chromeDriver.Quit();
+        }        
+       
+        
+        [Test]
+        public void SuccesfulRegistry()
+        {
+            Registry registryPage = new Registry(_chromeDriver);
+            User user = User.GetRandomUserForRegistration();
            
-               //registerPage.Navigate().FillUser(user).Submit();
             registryPage.Navigate().FillUser(user).Submit();
         }
         
         [Test]
-        public void TestSignIn()
+        public void FailRegistry()
         {
-            //HeaderMenu-link
             Registry registryPage = new Registry(_chromeDriver);
-            User user = User.MyAkk();
-           
-            //registerPage.Navigate().FillUser(user).Submit();
+            User user = User.GetRandomUserForRegistration();
+            user.Email = "";
+            registryPage.Navigate().FillUser(user).Submit();
+            
+            user = User.GetRandomUserForRegistration();
+            user.Email = "test@ui";
+            registryPage.Navigate().FillUser(user).Submit();
+            
+            user = User.GetRandomUserForRegistration();
+            user.Login = "";
+            registryPage.Navigate().FillUser(user).Submit();
+        }
+        
+        [Test]
+        public void SuccesfulTestSignIn()
+        {
+            Registry registryPage = new Registry(_chromeDriver);
+            User user = User.ValidUser();
+            
             registryPage.Navigate().SignIn().FillUser(user).Submit();
         }
+        
     }
 }
