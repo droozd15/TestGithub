@@ -24,6 +24,9 @@ namespace Tests.Pages
         [FindsBy(How = How.XPath, Using = "/html/body/div[4]/main/div/div[2]/div[2]/div[2]/dl/dd/div/details/summary/div")] 
         private IWebElement _editButton;
 
+        [FindsBy(How = How.XPath, Using = "/html/body/div[4]/main/div/div[2]/div[2]/div[1]/form/div/p[2]/button")] 
+        private IWebElement _submitButton;
+        
         public SettingsPages(IWebDriver driver)
         {
             _driver = driver;
@@ -39,17 +42,14 @@ namespace Tests.Pages
         public SettingsPages FillUser(User user)
         {
             _nameInput.SendKeys(user.Name);
-            //_emailInput.SendKeys(user.Email);
             _bioInput.SendKeys(user.Bio);
-            _uploadPhoto.SendKeys(user.FilePath);
-//            _avatar.SendKeys(user.FilePath);
             
             return this;
         }
-        public SettingsPages Edit()
+        
+        public SettingsPages Submit()
         {
-            _editButton.Click();
-            _uploadPhoto.Click();
+            _submitButton.Click();
             return this;
         }
     }

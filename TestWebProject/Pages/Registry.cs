@@ -9,24 +9,25 @@ namespace Tests.Pages
     public class RegistryPages
     {
         private readonly IWebDriver _driver;
-        private readonly string _url = @"https://github.com/";
+        private readonly string _url = @"https://www.kostirpg.com/";
         
-        [FindsBy(How = How.Id, Using = "user[login]")] 
-        private IWebElement _loginInput;
+        [FindsBy(How = How.ClassName, Using = "guest-btn")] 
+        private IWebElement _guestButton;
+            
+        [FindsBy(How = How.Id, Using = "name-registration-input")] 
+        private IWebElement _nameInput;
         
-        [FindsBy(How = How.Id, Using = "user[email]")] 
+        [FindsBy(How = How.Id, Using = "emailRegistrationInput")] 
         private IWebElement _emailInput;
         
-        [FindsBy(How = How.Id, Using = "user[password]")] 
+        [FindsBy(How = How.Id, Using = "password-registration-input")] 
         private IWebElement _passwordInput;
       
-        [FindsBy(How = How.ClassName, Using = "btn-primary-mktg")] 
+        [FindsBy(How = How.ClassName, Using = "modal-btn-register")] 
         private IWebElement _submitButton;
         
-        [FindsBy(How = How.XPath, Using = "/html/body/div[1]/header/div/div[2]/div[2]/a[1]")] 
-        private IWebElement _signInButton;
-        
-        private static readonly string PROBLEMS = "Problems with creating account";
+       
+        private static readonly string REGISTRY = "modal-action-register";
         private static readonly string ERROR = "flash-error";
         
         public RegistryPages(IWebDriver driver)
@@ -43,7 +44,7 @@ namespace Tests.Pages
 
         public RegistryPages FillUser(User user)
         {
-            _loginInput.SendKeys(user.Login);
+            _nameInput.SendKeys(user.Login);
             _emailInput.SendKeys(user.Email);
             _passwordInput.SendKeys(user.Password);
             
@@ -53,27 +54,21 @@ namespace Tests.Pages
         public void Submit()
         {
             _submitButton.Click();
-            try
-            {
-                if (_driver.FindElement(By.ClassName(ERROR)) != null)
-                {
-                    throw new System.Exception("has error");
-                }
-            }
-            catch (System.Exception e)
-            {
-                
-            }
-
         }
 
-        public Login SignIn()
+        public RegistryPages Guest()
         {
-            _signInButton.Click();
+            _guestButton.Click();
             WebDriverWait wait = new WebDriverWait(_driver,TimeSpan.FromSeconds(5));
-            if (wait.Until(d => _driver.FindElements(By.Id("login_field")).Count>0))
-                return new Login(_driver);
+            if (wait.Until(d => _driver.FindElements(By.ClassName(REGISTRY)).Count>0))
+                return this;
             return null;
         }
+        public RegistryPages Registry()
+        {
+             _driver.FindElement(By.ClassName(REGISTRY)).Click();
+             return this;
+        }
+        
     }
 }

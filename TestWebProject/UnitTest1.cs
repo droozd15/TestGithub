@@ -23,15 +23,15 @@ namespace Tests
             //            _chromeDriver.Quit();
         }        
        
-        
         [Test]
         public void SuccesfulRegistry()
         {
             RegistryPages registryPage = new RegistryPages(_chromeDriver);
             User user = User.GetRandomUserForRegistration();
            
-            registryPage.Navigate().FillUser(user).Submit();
-        }
+            registryPage.Navigate().Guest().Registry().FillUser(user).Submit();
+        }   
+     
         
         [Test]
         public void FailRegistry()
@@ -39,74 +39,44 @@ namespace Tests
             RegistryPages registryPage = new RegistryPages(_chromeDriver);
             User user = User.GetRandomUserForRegistration();
             user.Email = "";
-            registryPage.Navigate().FillUser(user).Submit();
+            registryPage.Navigate().Guest().Registry().FillUser(user).Submit();
             
             user = User.GetRandomUserForRegistration();
             user.Email = "test@ui";
-            registryPage.Navigate().FillUser(user).Submit();
+            registryPage.Navigate().Guest().Registry().FillUser(user).Submit();
             
             user = User.GetRandomUserForRegistration();
             user.Login = "";
-            registryPage.Navigate().FillUser(user).Submit();
+            registryPage.Navigate().Guest().Registry().FillUser(user).Submit();
         }
         
         [Test]
         public void SuccesfulTestSignIn()
         {
-            RegistryPages registryPage = new RegistryPages(_chromeDriver);
+            Login loginPage = new Login(_chromeDriver);
             User user = User.ValidUser();
             
-            registryPage.Navigate().SignIn().FillUser(user).Submit();
+            loginPage.Navigate().Guest().FillUser(user).Submit();
         }
         
         [Test]
         public void FailTestSignIn()
         {
-            RegistryPages registryPage = new RegistryPages(_chromeDriver);
+            Login loginPage = new Login(_chromeDriver);
             User  user = User.GetRandomUserForRegistration();
 
-            registryPage.Navigate().SignIn().FillUser(user).Submit();
+            loginPage.Navigate().Guest().FillUser(user).Submit();
         }
 
-        [Test]
-        public void CreateNewRepository()
+
+
+
+        public void Login()
         {
-            RegistryPages registryPage = new RegistryPages(_chromeDriver);
+            Login loginPage = new Login(_chromeDriver);
             User user = User.ValidUser();
             
-            registryPage.Navigate().SignIn().FillUser(user).Submit();
-            
-            RepositoryPages repositoryPages = new RepositoryPages(_chromeDriver);
-            Repository repository = Repository.GetRandomRepository();
-
-            repositoryPages.New().FillRepository(repository).Create();
-        }
-        [Test]
-        public void CreateExistRepository()
-        {
-            RegistryPages registryPage = new RegistryPages(_chromeDriver);
-            User user = User.ValidUser();
-            
-            registryPage.Navigate().SignIn().FillUser(user).Submit();
-            
-            RepositoryPages repositoryPages = new RepositoryPages(_chromeDriver);
-            Repository repository = Repository.GetExistRepository();
-
-            repositoryPages.New().FillRepository(repository).Create();
-        }
-
-        [Test]
-        public void ChangeSettings()
-        {
-            RegistryPages registryPage = new RegistryPages(_chromeDriver);
-            User user = User.ValidUser();
-            
-            registryPage.Navigate().SignIn().FillUser(user).Submit();
-
-            user = User.GetRandomUserForChangeSettings();
-            SettingsPages settingsPages = new SettingsPages(_chromeDriver);
-            settingsPages.Navigate().FillUser(user).Edit();
-            
+            loginPage.Navigate().Guest().FillUser(user).Submit();
         }
     }
 }

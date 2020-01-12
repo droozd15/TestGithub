@@ -27,8 +27,8 @@ namespace Tests.Models
         {
             return new User()
             {
-                Email = "droozd15@gmail.com",
-                Password = "1@2#qwertyuiop3$4_",
+                Email = "lilibri@gmail.com",
+                Password = "zxcvbnm,./",
             };
         }
         
