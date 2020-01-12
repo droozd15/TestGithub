@@ -20,14 +20,14 @@ namespace Tests
         [OneTimeTearDown]
         public void OneTimeTearDown()
         {
-            _chromeDriver.Quit();
+            //            _chromeDriver.Quit();
         }        
        
         
         [Test]
         public void SuccesfulRegistry()
         {
-            Registry registryPage = new Registry(_chromeDriver);
+            RegistryPages registryPage = new RegistryPages(_chromeDriver);
             User user = User.GetRandomUserForRegistration();
            
             registryPage.Navigate().FillUser(user).Submit();
@@ -36,7 +36,7 @@ namespace Tests
         [Test]
         public void FailRegistry()
         {
-            Registry registryPage = new Registry(_chromeDriver);
+            RegistryPages registryPage = new RegistryPages(_chromeDriver);
             User user = User.GetRandomUserForRegistration();
             user.Email = "";
             registryPage.Navigate().FillUser(user).Submit();
@@ -53,7 +53,7 @@ namespace Tests
         [Test]
         public void SuccesfulTestSignIn()
         {
-            Registry registryPage = new Registry(_chromeDriver);
+            RegistryPages registryPage = new RegistryPages(_chromeDriver);
             User user = User.ValidUser();
             
             registryPage.Navigate().SignIn().FillUser(user).Submit();
@@ -62,11 +62,37 @@ namespace Tests
         [Test]
         public void FailTestSignIn()
         {
-            Registry registryPage = new Registry(_chromeDriver);
+            RegistryPages registryPage = new RegistryPages(_chromeDriver);
             User  user = User.GetRandomUserForRegistration();
 
             registryPage.Navigate().SignIn().FillUser(user).Submit();
         }
-        
+
+        [Test]
+        public void CreateNewRepository()
+        {
+            RegistryPages registryPage = new RegistryPages(_chromeDriver);
+            User user = User.ValidUser();
+            
+            registryPage.Navigate().SignIn().FillUser(user).Submit();
+            
+            RepositoryPages repositoryPages = new RepositoryPages(_chromeDriver);
+            Repository repository = Repository.GetRandomRepository();
+
+            repositoryPages.New().FillRepository(repository).Create();
+        }
+        [Test]
+        public void CreateExistRepository()
+        {
+            RegistryPages registryPage = new RegistryPages(_chromeDriver);
+            User user = User.ValidUser();
+            
+            registryPage.Navigate().SignIn().FillUser(user).Submit();
+            
+            RepositoryPages repositoryPages = new RepositoryPages(_chromeDriver);
+            Repository repository = Repository.GetExistRepository();
+
+            repositoryPages.New().FillRepository(repository).Create();
+        }
     }
 }

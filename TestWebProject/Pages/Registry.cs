@@ -6,7 +6,7 @@ using Tests.Models;
 
 namespace Tests.Pages
 {
-    public class Registry
+    public class RegistryPages
     {
         private readonly IWebDriver _driver;
         private readonly string _url = @"https://github.com/";
@@ -29,19 +29,19 @@ namespace Tests.Pages
         private static readonly string PROBLEMS = "Problems with creating account";
         private static readonly string ERROR = "flash-error";
         
-        public Registry(IWebDriver driver)
+        public RegistryPages(IWebDriver driver)
         {
             _driver = driver;
             PageFactory.InitElements(driver,this);
         }
         
-        public Registry Navigate()
+        public RegistryPages Navigate()
         {
             _driver.Navigate().GoToUrl(_url);
             return this;
         }
 
-        public Registry FillUser(User user)
+        public RegistryPages FillUser(User user)
         {
             _loginInput.SendKeys(user.Login);
             _emailInput.SendKeys(user.Email);
@@ -57,10 +57,10 @@ namespace Tests.Pages
             {
                 if (_driver.FindElement(By.ClassName(ERROR)) != null)
                 {
-                    throw new Exception("has error");
+                    throw new System.Exception("has error");
                 }
             }
-            catch (Exception e)
+            catch (System.Exception e)
             {
                 
             }
