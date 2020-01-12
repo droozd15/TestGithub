@@ -10,7 +10,9 @@ namespace Tests.Models
         public string Login { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-        
+        public string FilePath { get; set; }
+        public string Name { get; set; }
+        public string Bio { get; set; }
         public static User GetRandomUserForRegistration()
         {
             return new User()
@@ -27,6 +29,16 @@ namespace Tests.Models
             {
                 Email = "droozd15@gmail.com",
                 Password = "1@2#qwertyuiop3$4_",
+            };
+        }
+        
+        public static User GetRandomUserForChangeSettings()
+        {
+            return new User()
+            {
+                Bio = WordCreator.GetRandomWord(10),
+                Name = WordCreator.GetRandomWord(10) ,
+                FilePath = @"C:/Users/Anna Zanovskaya/RiderProjects/TestWebProject/Image/papug.jpg"
             };
         }
     }

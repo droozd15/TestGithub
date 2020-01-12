@@ -46,7 +46,7 @@ namespace Tests.Pages
             _loginInput.SendKeys(user.Login);
             _emailInput.SendKeys(user.Email);
             _passwordInput.SendKeys(user.Password);
-
+            
             return this;
         }
 

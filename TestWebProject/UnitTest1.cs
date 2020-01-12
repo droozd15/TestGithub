@@ -94,5 +94,19 @@ namespace Tests
 
             repositoryPages.New().FillRepository(repository).Create();
         }
+
+        [Test]
+        public void ChangeSettings()
+        {
+            RegistryPages registryPage = new RegistryPages(_chromeDriver);
+            User user = User.ValidUser();
+            
+            registryPage.Navigate().SignIn().FillUser(user).Submit();
+
+            user = User.GetRandomUserForChangeSettings();
+            SettingsPages settingsPages = new SettingsPages(_chromeDriver);
+            settingsPages.Navigate().FillUser(user).Edit();
+            
+        }
     }
 }
