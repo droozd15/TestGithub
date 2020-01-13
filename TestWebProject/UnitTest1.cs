@@ -21,7 +21,7 @@ namespace Tests
         [OneTimeTearDown]
         public void OneTimeTearDown()
         {
-         //   _chromeDriver.Quit();
+        //    _chromeDriver.Quit();
         }        
        
         [Test]
@@ -106,6 +106,19 @@ namespace Tests
             TaskPages taskPage = projectPages.Navigate().CreateProject().FillProject(project).Submit().CreateTask();
             
             Task task = Task.GetRandomTask();
+            taskPage.FillTask(task).Submit();
+        } 
+        [Test]
+        public void FailCreateTask()
+        {
+            Login();
+            
+            ProjectPages projectPages = new ProjectPages(_chromeDriver);
+            Project project = Project.GetRandomProject();
+            
+            TaskPages taskPage = projectPages.Navigate().CreateProject().FillProject(project).Submit().CreateTask();
+            
+            Task task = Task.GetEmptyTask();
             taskPage.FillTask(task).Submit();
         } 
         public void Login()

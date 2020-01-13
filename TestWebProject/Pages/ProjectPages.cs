@@ -42,7 +42,7 @@ namespace Tests.Pages
 
         public ProjectPages CreateProject()
         {
-            WebDriverWait wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(5));
+            WebDriverWait wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
             if (wait.Until(d => _driver.FindElements(By.Id(PROJECT_CONTENT)).Count > 0))
             {
                 _createButton.Click();

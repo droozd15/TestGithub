@@ -22,7 +22,8 @@ namespace Tests.Pages
         
         [FindsBy(How = How.XPath, Using = "/html/body/div[4]/main/div/div[1]/div[1]/div/div[4]/form/div[4]/div/input")]
         private IWebElement _fileInput;
-            ///html/body/div[4]/main/div/div[1]/div[1]/div/div[4]/form/div[8]/div/button[1]
+        
+        private static readonly string ERROR = "error-message";
         public TaskPages(IWebDriver driver)
         {
             _driver = driver;

@@ -17,5 +17,14 @@ namespace Tests.Models
                 FilePath = "C:/Users/Anna Zanovskaya/RiderProjects/TestWebProject/Image/papug.jpg",
             };
         }
+        public static Task GetEmptyTask()
+        {
+            return new Task()
+            {
+                Title = "",
+                Description = "",
+                FilePath = ""
+            };
+        }
     }
 }
