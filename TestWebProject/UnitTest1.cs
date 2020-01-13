@@ -80,7 +80,8 @@ namespace Tests
             Login();
             
             ProjectPages projectPages = new ProjectPages(_chromeDriver);
-            projectPages.Navigate().CreateProject();
+            Project project = Project.GetRandomProject();
+            projectPages.Navigate().CreateProject().FillProject(project).Submit();
         } 
         
         public void Login()
