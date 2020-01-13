@@ -68,14 +68,6 @@ namespace Tests
             loginPage.Navigate().Guest().FillUser(user).Submit();
         }
 
-        [Test]
-        public void AddToCart()
-        {
-            Login();
-           
-            ProductPages productPages = new ProductPages(_chromeDriver);
-            productPages.Navigate();
-        }
         public void Login()
         {
             Login loginPage = new Login(_chromeDriver);
