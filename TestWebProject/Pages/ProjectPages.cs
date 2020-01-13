@@ -23,6 +23,10 @@ namespace Tests.Pages
         [FindsBy(How = How.XPath, Using = "/html/body/div[4]/main/div/div[1]/div/div[1]/div/form/div[7]/button")]
         private IWebElement _submitButton;
         
+        [FindsBy(How = How.XPath, Using = "/html/body/div[4]/main/div[1]/div[1]/div[1]/div/div[2]/div[3]/a[2]")]
+        private IWebElement _createTaskButton;
+
+        
         private static readonly string PROJECT_CONTENT = "main-content";
         public ProjectPages(IWebDriver driver)
         {
@@ -54,11 +58,15 @@ namespace Tests.Pages
            
             return this;
         }
-        public ProjectPages Submit()
+        public TaskPages Submit()
         {
-            _submitButton.Click(); 
-            return this;
-            
+            _submitButton.Click();
+            WebDriverWait wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(15));
+            if (wait.Until(d => _driver.FindElements(By.ClassName("empty-section")).Count > 0))
+            {
+                return new TaskPages(_driver);
+            }
+            return null;
         }
     }
 }

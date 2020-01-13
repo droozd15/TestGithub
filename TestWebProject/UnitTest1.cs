@@ -74,6 +74,7 @@ namespace Tests
             loginPage.Navigate().FillUser(user).Submit();
         }
 
+
         [Test]
         public void SuccessCreateProject()
         {
@@ -81,9 +82,22 @@ namespace Tests
             
             ProjectPages projectPages = new ProjectPages(_chromeDriver);
             Project project = Project.GetRandomProject();
+            
             projectPages.Navigate().CreateProject().FillProject(project).Submit();
+        }
+        [Test]
+        public void SuccessCreateTask()
+        {
+            Login();
+            
+            ProjectPages projectPages = new ProjectPages(_chromeDriver);
+            Project project = Project.GetRandomProject();
+            
+            TaskPages taskPage = projectPages.Navigate().CreateProject().FillProject(project).Submit().CreateTask();
+            
+            Task task = Task.GetRandomTask();
+            taskPage.FillTask(task).Submit();
         } 
-        
         public void Login()
         {
             Login loginPage = new Login(_chromeDriver);
