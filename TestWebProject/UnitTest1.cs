@@ -86,6 +86,16 @@ namespace Tests
             projectPages.Navigate().CreateProject().FillProject(project).Submit();
         }
         [Test]
+        public void FailCreateProject()
+        {
+            Login();
+            
+            ProjectPages projectPages = new ProjectPages(_chromeDriver);
+            Project project = Project.GetEmptyProject();
+            
+            projectPages.Navigate().CreateProject().FillProject(project).Submit();
+        }
+        [Test]
         public void SuccessCreateTask()
         {
             Login();

@@ -15,5 +15,13 @@ namespace Tests.Models
                 Description = WordCreator.GetRandomWord(10),
             };
         }
+        public static Project GetEmptyProject()
+        {
+            return new Project()
+            {
+                Title = "",
+                Description = "",
+            };
+        }
     }
 }

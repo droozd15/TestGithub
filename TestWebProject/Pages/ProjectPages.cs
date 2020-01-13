@@ -61,7 +61,7 @@ namespace Tests.Pages
         public TaskPages Submit()
         {
             _submitButton.Click();
-            WebDriverWait wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(15));
+            WebDriverWait wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
             if (wait.Until(d => _driver.FindElements(By.ClassName("empty-section")).Count > 0))
             {
                 return new TaskPages(_driver);
