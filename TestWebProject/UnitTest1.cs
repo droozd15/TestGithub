@@ -2,6 +2,7 @@ using System;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using Tests.Exception;
 using Tests.Helpers;
 using Tests.Models;
 using Tests.Pages;
@@ -45,11 +46,11 @@ namespace Tests
 
             user.Name = WordCreator.GetRandomWord(10);
             user.Organization = "";
-            registryPage.Navigate().Guest().FillUser(user).Submit();
+            registryPage.Clear().FillUser(user).Submit();
             
             user.Organization = WordCreator.GetRandomWord(10);
             user.Email = "test@ui";
-            registryPage.Navigate().Guest().FillUser(user).Submit();
+            registryPage.Clear().FillUser(user).Submit();
             
             user.Email = WordCreator.GetRandomEmail(6);
             user.Password = "";
@@ -62,7 +63,7 @@ namespace Tests
             Login loginPage = new Login(_chromeDriver);
             User user = User.ValidUser();
 
-            loginPage.Navigate().FillUser(user).Submit();
+            Assert.NotNull(loginPage.Navigate().FillUser(user).Submit());
         }
         
         [Test]
@@ -71,7 +72,14 @@ namespace Tests
             Login loginPage = new Login(_chromeDriver);
             User  user = User.GetRandomUserForRegistration();
 
-            loginPage.Navigate().FillUser(user).Submit();
+            try
+            {
+                loginPage.Navigate().FillUser(user).Submit();
+            }
+            catch (MessageException e)
+            {
+                Assert.AreEqual("Данные для входа некорректны!",e.Message);
+            }
         }
 
 
