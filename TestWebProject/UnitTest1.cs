@@ -2,6 +2,7 @@ using System;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using Tests.Helpers;
 using Tests.Models;
 using Tests.Pages;
 
@@ -28,8 +29,8 @@ namespace Tests
         {
             RegistryPages registryPage = new RegistryPages(_chromeDriver);
             User user = User.GetRandomUserForRegistration();
-           
-            registryPage.Navigate().Guest().Registry().FillUser(user).Submit();
+
+            registryPage.Navigate().Guest().FillUser(user).Submit();
         }   
      
         
@@ -38,18 +39,23 @@ namespace Tests
         {
             RegistryPages registryPage = new RegistryPages(_chromeDriver);
             User user = User.GetRandomUserForRegistration();
-            user.Email = "";
-            registryPage.Navigate().Guest().Registry().FillUser(user).Submit();
             
-            user = User.GetRandomUserForRegistration();
+            user.Name = "";
+            registryPage.Navigate().Guest().FillUser(user).Submit();
+
+            user.Name = WordCreator.GetRandomWord(10);
+            user.Organization = "";
+            registryPage.Navigate().Guest().FillUser(user).Submit();
+            
+            user.Organization = WordCreator.GetRandomWord(10);
             user.Email = "test@ui";
-            registryPage.Navigate().Guest().Registry().FillUser(user).Submit();
+            registryPage.Navigate().Guest().FillUser(user).Submit();
             
-            user = User.GetRandomUserForRegistration();
-            user.Login = "";
-            registryPage.Navigate().Guest().Registry().FillUser(user).Submit();
+            user.Email = WordCreator.GetRandomEmail(6);
+            user.Password = "";
+            registryPage.Navigate().Guest().FillUser(user).Submit();
         }
-        
+        /*
         [Test]
         public void SuccesfulTestSignIn()
         {
@@ -67,13 +73,13 @@ namespace Tests
 
             loginPage.Navigate().Guest().FillUser(user).Submit();
         }
-
+*/
         public void Login()
         {
             Login loginPage = new Login(_chromeDriver);
             User user = User.ValidUser();
             
-            loginPage.Navigate().Guest().FillUser(user).Submit();
+            loginPage.Navigate().FillUser(user).Submit();
         }
     }
 }
