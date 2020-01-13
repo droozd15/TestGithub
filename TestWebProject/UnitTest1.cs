@@ -21,7 +21,7 @@ namespace Tests
         [OneTimeTearDown]
         public void OneTimeTearDown()
         {
-                        _chromeDriver.Quit();
+         //   _chromeDriver.Quit();
         }        
        
         [Test]
@@ -74,6 +74,15 @@ namespace Tests
             loginPage.Navigate().FillUser(user).Submit();
         }
 
+        [Test]
+        public void SuccessCreateProject()
+        {
+            Login();
+            
+            ProjectPages projectPages = new ProjectPages(_chromeDriver);
+            projectPages.Navigate().CreateProject();
+        } 
+        
         public void Login()
         {
             Login loginPage = new Login(_chromeDriver);
@@ -81,5 +90,6 @@ namespace Tests
             
             loginPage.Navigate().FillUser(user).Submit();
         }
+        
     }
 }
