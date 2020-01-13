@@ -21,7 +21,7 @@ namespace Tests
         [OneTimeTearDown]
         public void OneTimeTearDown()
         {
-            //            _chromeDriver.Quit();
+                        _chromeDriver.Quit();
         }        
        
         [Test]
@@ -55,14 +55,14 @@ namespace Tests
             user.Password = "";
             registryPage.Navigate().Guest().FillUser(user).Submit();
         }
-        /*
+        
         [Test]
         public void SuccesfulTestSignIn()
         {
             Login loginPage = new Login(_chromeDriver);
             User user = User.ValidUser();
-            
-            loginPage.Navigate().Guest().FillUser(user).Submit();
+
+            loginPage.Navigate().FillUser(user).Submit();
         }
         
         [Test]
@@ -71,9 +71,9 @@ namespace Tests
             Login loginPage = new Login(_chromeDriver);
             User  user = User.GetRandomUserForRegistration();
 
-            loginPage.Navigate().Guest().FillUser(user).Submit();
+            loginPage.Navigate().FillUser(user).Submit();
         }
-*/
+
         public void Login()
         {
             Login loginPage = new Login(_chromeDriver);
