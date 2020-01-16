@@ -2,6 +2,7 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.PageObjects;
+using Tests.Exception;
 using Tests.Models;
 
 namespace Tests.Pages
@@ -32,11 +33,12 @@ namespace Tests.Pages
         [FindsBy(How = How.XPath, Using = "/html/body/div[3]/main/div/div/div/form/div/div/div[2]/div[2]/a")] 
         private IWebElement _activityButton;
 
-        
+        [FindsBy(How = How.XPath, Using = "/html/body/div[3]/div[1]/div[1]/aside/wm-side-left/div[2]/div/div/a[2]")] 
+        private IWebElement _exitButton;        
        
-        private static readonly string REGISTRY = "modal-action-register";
+        private static readonly string REGISTRATION = "registration";
         private static readonly string ERROR = "flash-error";
-        
+        private static readonly string USER_INFO = "side-block-user";
         public RegistryPages(IWebDriver driver)
         {
             _driver = driver;
@@ -59,9 +61,15 @@ namespace Tests.Pages
             return this;
         }
 
-        public void Submit()
+        public RegistryPages Submit()
         {
             _submitButton.Click();
+            if (_driver.FindElements(By.ClassName(REGISTRATION)).Count > 0)
+            {
+                throw new MessageException("Данные для входа некорректны!");
+            }
+           
+            return this;
         }
 
         public RegistryPages Guest()
@@ -78,5 +86,26 @@ namespace Tests.Pages
             return this;
         }
         
+        public RegistryPages Clear()
+        {
+            _nameInput.Clear();
+            _organizationInput.Clear();
+            _emailInput.Clear();
+            _passwordInput.Clear();
+            return this;
+        }
+        
+        public RegistryPages Exit()
+        {
+            WebDriverWait wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
+            if (wait.Until(d => _driver.FindElements(By.ClassName(USER_INFO)).Count > 0))
+            {
+                _exitButton.Click();
+                return this;
+            }
+            
+            return this;
+        }
+
     }
 }

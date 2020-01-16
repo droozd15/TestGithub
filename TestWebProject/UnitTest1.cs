@@ -13,7 +13,7 @@ namespace Tests
     {
         private IWebDriver _chromeDriver;
         
-        [SetUp]
+        [OneTimeSetUp]
         public void Setup()
         {
             _chromeDriver = new ChromeDriver("C:/Users/Anna Zanovskaya/RiderProjects/TestWebProject/TestWebProject/bin/Debug/netcoreapp2.1");
@@ -22,7 +22,7 @@ namespace Tests
         [OneTimeTearDown]
         public void OneTimeTearDown()
         {
-        //    _chromeDriver.Quit();
+            _chromeDriver.Quit();
         }        
        
         [Test]
@@ -31,7 +31,9 @@ namespace Tests
             RegistryPages registryPage = new RegistryPages(_chromeDriver);
             User user = User.GetRandomUserForRegistration();
 
-            registryPage.Navigate().Guest().FillUser(user).Submit();
+            Assert.NotNull(registryPage.Navigate().Guest().FillUser(user).Submit());
+            
+            registryPage.Exit();
         }   
      
         
@@ -42,19 +44,48 @@ namespace Tests
             User user = User.GetRandomUserForRegistration();
             
             user.Name = "";
-            registryPage.Navigate().Guest().FillUser(user).Submit();
+            try
+            {
+                registryPage.Navigate().Guest().FillUser(user).Submit();
+            }
+            catch (MessageException e)
+            {
+                Assert.AreEqual("Данные для входа некорректны!",e.Message);
+            }
+            
 
             user.Name = WordCreator.GetRandomWord(10);
             user.Organization = "";
-            registryPage.Clear().FillUser(user).Submit();
+            try
+            {
+                registryPage.Navigate().Guest().FillUser(user).Submit();
+            }
+            catch (MessageException e)
+            {
+                Assert.AreEqual("Данные для входа некорректны!",e.Message);
+            }
             
             user.Organization = WordCreator.GetRandomWord(10);
-            user.Email = "test@ui";
-            registryPage.Clear().FillUser(user).Submit();
+            user.Email = "t";
+            try
+            {
+                registryPage.Navigate().Guest().FillUser(user).Submit();
+            }
+            catch (MessageException e)
+            {
+                Assert.AreEqual("Данные для входа некорректны!",e.Message);
+            }
             
             user.Email = WordCreator.GetRandomEmail(6);
             user.Password = "";
-            registryPage.Navigate().Guest().FillUser(user).Submit();
+            try
+            {
+                registryPage.Navigate().Guest().FillUser(user).Submit();
+            }
+            catch (MessageException e)
+            {
+                Assert.AreEqual("Данные для входа некорректны!",e.Message);
+            }
         }
         
         [Test]
@@ -64,6 +95,7 @@ namespace Tests
             User user = User.ValidUser();
 
             Assert.NotNull(loginPage.Navigate().FillUser(user).Submit());
+            loginPage.ToNotifications().Exit();
         }
         
         [Test]
@@ -84,29 +116,39 @@ namespace Tests
 
 
         [Test]
-        public void SuccessCreateProject()
+        public void SuccessfulCreateProject()
         {
-            Login();
+            Login loginPage = Login();
             
             ProjectPages projectPages = new ProjectPages(_chromeDriver);
             Project project = Project.GetRandomProject();
             
-            projectPages.Navigate().CreateProject().FillProject(project).Submit();
+            Assert.NotNull(projectPages.Navigate().CreateProject().FillProject(project).Submit());
+            loginPage.ToNotifications().Exit();
         }
         [Test]
         public void FailCreateProject()
         {
-            Login();
+            Login loginPage = Login();
             
             ProjectPages projectPages = new ProjectPages(_chromeDriver);
             Project project = Project.GetEmptyProject();
             
-            projectPages.Navigate().CreateProject().FillProject(project).Submit();
+            try
+            {
+                projectPages.Navigate().CreateProject().FillProject(project).Submit();
+            }
+            catch (MessageException e)
+            {
+                Assert.AreEqual("Название не может быть пустым!",e.Message);
+            }
+
+            loginPage.ToNotifications().Exit();
         }
         [Test]
         public void SuccessCreateTask()
         {
-            Login();
+            Login loginPage = Login();
             
             ProjectPages projectPages = new ProjectPages(_chromeDriver);
             Project project = Project.GetRandomProject();
@@ -115,11 +157,12 @@ namespace Tests
             
             Task task = Task.GetRandomTask();
             taskPage.FillTask(task).Submit();
+            loginPage.ToNotifications().Exit();
         } 
         [Test]
         public void FailCreateTask()
         {
-            Login();
+            Login loginPage = Login();
             
             ProjectPages projectPages = new ProjectPages(_chromeDriver);
             Project project = Project.GetRandomProject();
@@ -127,14 +170,23 @@ namespace Tests
             TaskPages taskPage = projectPages.Navigate().CreateProject().FillProject(project).Submit().CreateTask();
             
             Task task = Task.GetEmptyTask();
-            taskPage.FillTask(task).Submit();
+            try
+            {
+                taskPage.FillTask(task).Submit();
+            }
+            catch (MessageException e)
+            {
+                Assert.AreEqual("Название не может быть пустым!",e.Message);
+            }
+            loginPage.ToNotifications().Exit();
         } 
-        public void Login()
+        public Login Login()
         {
             Login loginPage = new Login(_chromeDriver);
             User user = User.ValidUser();
             
             loginPage.Navigate().FillUser(user).Submit();
+            return loginPage;
         }
         
     }

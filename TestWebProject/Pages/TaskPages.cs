@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 using SeleniumExtras.PageObjects;
+using Tests.Exception;
 using Tests.Models;
 
 namespace Tests.Pages
@@ -37,15 +38,19 @@ namespace Tests.Pages
         }
         public TaskPages FillTask(Task task)
         {
-            _titleInput.SendKeys(task.Title);
-            _descriptionInput.SendKeys(task.Description);
-           _fileInput.SendKeys(task.FilePath);
+                _titleInput.SendKeys(task.Title);
+                _descriptionInput.SendKeys(task.Description);
+                _fileInput.SendKeys(task.FilePath);
             
             return this;
         }
         public TaskPages Submit()
         {
             _submitButton.Click();
+            if (_driver.FindElements(By.ClassName(ERROR)).Count > 0)
+            {
+                throw new MessageException("Название не может быть пустым!");
+            }
             return this;
         }
     }

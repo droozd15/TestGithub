@@ -21,9 +21,9 @@ namespace Tests.Models
         {
             return new Task()
             {
-                Title = "",
+                Title = " ",
                 Description = "",
-                FilePath = ""
+                FilePath = "C:/Users/Anna Zanovskaya/RiderProjects/TestWebProject/Image/papug.jpg",
             };
         }
     }

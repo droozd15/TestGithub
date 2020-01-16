@@ -2,6 +2,7 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.PageObjects;
+using Tests.Exception;
 using Tests.Models;
 
 namespace Tests.Pages
@@ -19,7 +20,7 @@ namespace Tests.Pages
         
         [FindsBy(How = How.XPath, Using = "/html/body/div[4]/main/div/div[1]/div/div[1]/div/form/div[2]/textarea")]
         private IWebElement _descriptionInput;
-
+            
         [FindsBy(How = How.XPath, Using = "/html/body/div[4]/main/div/div[1]/div/div[1]/div/form/div[7]/button")]
         private IWebElement _submitButton;
         
@@ -28,6 +29,7 @@ namespace Tests.Pages
 
         
         private static readonly string PROJECT_CONTENT = "main-content";
+        private static readonly string ERROR = "error-message";
         public ProjectPages(IWebDriver driver)
         {
             _driver = driver;
@@ -55,12 +57,16 @@ namespace Tests.Pages
         {
             _titleInput.SendKeys(project.Title);
             _descriptionInput.SendKeys(project.Description);
-           
+            
             return this;
         }
         public TaskPages Submit()
         {
             _submitButton.Click();
+            if (_driver.FindElements(By.ClassName(ERROR)).Count > 0)
+            {
+                throw new MessageException("Название не может быть пустым!");
+            }
             WebDriverWait wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
             if (wait.Until(d => _driver.FindElements(By.ClassName("empty-section")).Count > 0))
             {

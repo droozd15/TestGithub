@@ -19,7 +19,7 @@ namespace Tests.Models
         {
             return new Project()
             {
-                Title = "",
+                Title = " ",
                 Description = "",
             };
         }
